@@ -36434,7 +36434,7 @@ A.ZA.prototype={
 $0(){return B.IY},
 $S:318}
 A.DW.prototype={
-T(a){return new A.vP("/receber_convidado","Voom",B.tS,B.MP,B.Nq,!1,$.ayJ(),null)}}
+T(a){return new A.vP("/receber_convidado","Festit-convite",B.tS,B.MP,B.Nq,!1,$.ayJ(),null)}}
 A.q1.prototype={
 T(a){var s=null
 return A.avy(A.asx(B.a3A),A.jo(s,s,B.J,s,s,s,s,s,s,s,s,s))}}
