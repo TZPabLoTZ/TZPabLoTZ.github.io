@@ -12,7 +12,7 @@ class AppWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Voom',
+      title: 'Festit-convite',
       getPages: AppRoutes.pages,
       initialRoute: ReceiveGuestPage.route,
       locale: const Locale('pt', 'BR'),
