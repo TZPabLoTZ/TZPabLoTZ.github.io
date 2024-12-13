@@ -1,1 +1,14 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"festit-c0636","appId":"1:133375235827:android:bcbedac8ff5be33217c986","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"festit-c0636","configurations":{"web":"1:133375235827:web:83d0bcdde030eb6b17c986"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "festit-c0636",
+          "configurations": {
+            "web": "1:133375235827:web:83d0bcdde030eb6b17c986"
+          }
+        }
+      }
+    }
+  }
+}

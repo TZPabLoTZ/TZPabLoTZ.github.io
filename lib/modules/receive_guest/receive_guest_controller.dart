@@ -25,16 +25,17 @@ class ReceiveGuestController extends GetxController {
   void onInit() {
     super.onInit();
     fetchEvento();
+    print('object');
   }
 
   Future<void> fetchEvento() async {
     try {
       isLoading = true;
       update();
-      final userId = Get.parameters['id'] ?? '';
-      if (userId.isEmpty) {
-        throw Exception('ID do usuário não encontrado');
-      }
+      final userId = Get.parameters['id'] ?? 'nKUME3X48UhhOy6qJ0LM64N7H353';
+      // if (userId.isEmpty) {
+      //   throw Exception('ID do usuário não encontrado');
+      // }
 
       final eventos = await repository.getEventosByUserId(userId);
       if (eventos.isNotEmpty) {

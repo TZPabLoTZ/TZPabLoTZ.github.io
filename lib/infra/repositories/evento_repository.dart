@@ -7,6 +7,11 @@ class EventoRepository {
 
   Future<List<Evento>> getEventosByUserId(String userId) async {
     try {
+      final snaptest =
+          await firestore.collection('environments').doc('dev').get();
+
+      print(snaptest.data());
+
       final snapshot = await firestore
           .collection('environments')
           .doc('prod')
