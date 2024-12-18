@@ -6,9 +6,11 @@ import 'receive_guest_controller.dart';
 import 'widgets/body_receive_guest.dart';
 
 class ReceiveGuestPage extends GetView<ReceiveGuestController> {
-  const ReceiveGuestPage({super.key});
+  final String? id;
 
-  static const route = '/receber_convidado';
+  static const route = '/r_c/:nKUME3X48UhhOy6qJ0LM64N7H353';
+
+  const ReceiveGuestPage({super.key, this.id});
 
   @override
   Widget build(BuildContext context) {

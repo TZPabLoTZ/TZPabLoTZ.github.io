@@ -1,0 +1,14 @@
+{
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "festit-c0636",
+          "configurations": {
+            "web": "1:133375235827:web:83d0bcdde030eb6b17c986"
+          }
+        }
+      }
+    }
+  }
+}

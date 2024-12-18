@@ -1,6 +1,7 @@
 import 'package:festit_invited/modules/receive_guest/receive_guest_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
 
 import 'app_routes.dart';
@@ -10,6 +11,8 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    setUrlStrategy(PathUrlStrategy());
+
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Festit-convite',
@@ -22,7 +25,6 @@ class AppWidget extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      // defaultTransition: Transition.noTransition, //TODO: Perguntar para o Ailton dps de pronto as telas de acordo com o figma
     );
   }
 }

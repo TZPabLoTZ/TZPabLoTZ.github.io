@@ -1,11 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../infra/models/evento.dart';
+import '../../infra/repositories/evento_repository.dart';
+
 class ReceiveGuestController extends GetxController {
+  final repository = EventoRepository();
+
+  final guestController = TextEditingController();
+  final guestFocusNode = FocusNode();
+
+  final List<TextEditingController> companionControllers = [];
+  final List<FocusNode> companionFocusNodes = [];
+
   final List<String> filteredSuggestions = [];
   final List<String> usedNames = [];
 
   bool showSuggestions = false;
+
+  Evento? evento;
+  bool isLoading = false;
+
+  @override
+  void onInit() {
+    super.onInit();
+    fetchEvento();
+    print('object');
+  }
+
+  Future<void> fetchEvento() async {
+    try {
+      isLoading = true;
+      update();
+      final userId = Get.parameters['id'] ?? 'nKUME3X48UhhOy6qJ0LM64N7H353';
+      // if (userId.isEmpty) {
+      //   throw Exception('ID do usuário não encontrado');
+      // }
+
+      final eventos = await repository.getEventosByUserId(userId);
+      if (eventos.isNotEmpty) {
+        evento = eventos.first;
+      } else {
+        evento = null;
+      }
+    } catch (e) {
+      print('Erro ao buscar evento: $e');
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
 
   final List<String> listaTags = [
     'Carlos',
@@ -16,12 +60,6 @@ class ReceiveGuestController extends GetxController {
     'Pedro',
     'Julia',
   ];
-
-  final guestController = TextEditingController();
-  final guestFocusNode = FocusNode();
-
-  final List<TextEditingController> companionControllers = [];
-  final List<FocusNode> companionFocusNodes = [];
 
   void addCompanionField() {
     companionControllers.add(TextEditingController());
