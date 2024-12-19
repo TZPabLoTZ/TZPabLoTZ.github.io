@@ -1,14 +1,19 @@
 import 'dart:io';
+import 'dart:js' as js;
 
 import 'package:festit_invited/app_widget.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart' as fb;
 import 'package:flutter/material.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final app = await Firebase.initializeApp(
-    options: const FirebaseOptions(
+  if (js.context['global'] == null) {
+    js.context['global'] = js.context;
+  }
+
+  final app = await fb.Firebase.initializeApp(
+    options: const fb.FirebaseOptions(
       apiKey: "AIzaSyDxa5w3vNHJWWgjU9vc8r446BoPQpDr-xw",
       authDomain: "festit-c0636.firebaseapp.com",
       projectId: "festit-c0636",
