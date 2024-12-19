@@ -1,3 +1,4 @@
+import 'package:festit_invited/modules/receive_guest/receive_guest_controller.dart';
 import 'package:festit_invited/modules/receive_guest/receive_guest_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -18,6 +19,9 @@ class AppWidget extends StatelessWidget {
       title: 'Festit-convite',
       getPages: AppRoutes.pages,
       initialRoute: ReceiveGuestPage.route,
+      initialBinding: BindingsBuilder(() {
+        Get.put(ReceiveGuestController());
+      }),
       locale: const Locale('pt', 'BR'),
       supportedLocales: const [Locale('pt', 'BR')],
       localizationsDelegates: const [

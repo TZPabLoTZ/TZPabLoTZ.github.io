@@ -1,9 +1,9 @@
-import 'package:festit_invited/modules/guest_confirmation/guest_confirmation_page.dart';
-import 'package:festit_invited/modules/receive_guest/receive_guest_page.dart';
-import 'package:festit_invited/modules/splash/splash_page.dart';
 import 'package:get/get.dart';
 
+import 'modules/guest_confirmation/guest_confirmation_page.dart';
 import 'modules/receive_guest/receive_guest_controller.dart';
+import 'modules/receive_guest/receive_guest_page.dart';
+import 'modules/splash/splash_page.dart';
 
 class AppRoutes {
   AppRoutes._();
@@ -16,7 +16,9 @@ class AppRoutes {
     GetPage(
       name: ReceiveGuestPage.route,
       page: () => const ReceiveGuestPage(),
-      binding: BindingsBuilder.put(() => ReceiveGuestController()),
+      binding: BindingsBuilder(() {
+        Get.put(ReceiveGuestController());
+      }),
     ),
     GetPage(
       name: GuestConfirmationPage.route,

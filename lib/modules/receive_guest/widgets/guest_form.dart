@@ -29,15 +29,17 @@ class GuestForm extends StatelessWidget {
               hintText: 'Digite aqui o seu primeiro nome',
               focusNode: control.guestFocusNode,
               onPrefix: () {},
-              onChanged: (value) => control.updateSuggestions(value, -1),
+              onChanged: (value) {
+                control.updateSuggestions(value, -1);
+              },
             ),
             const SizedBox(height: 6),
             if (control.isGuestNameComplete()) ...[
-              ...control.companionControllers.asMap().entries.map(
+              ...control.guestControllers.asMap().entries.map(
                 (entry) {
                   final index = entry.key;
                   final textController = entry.value;
-                  final focusNode = control.companionFocusNodes[index];
+                  final focusNode = control.guestFocusNodes[index];
 
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 6),
@@ -47,8 +49,6 @@ class GuestForm extends StatelessWidget {
                       focusNode: focusNode,
                       onPrefix: () {},
                       onSuffix: () => control.removeCompanionField(index),
-                      onChanged: (value) =>
-                          control.updateSuggestions(value, index),
                     ),
                   );
                 },

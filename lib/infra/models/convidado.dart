@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Convidado {
   String? id;
   String nome;
@@ -26,19 +24,14 @@ class Convidado {
     return result;
   }
 
-  factory Convidado.fromMap(Map<String, dynamic> map) {
+  factory Convidado.fromMap(Map<String, dynamic> map, String id) {
     return Convidado(
-      id: map['id'],
+      id: id,
       nome: map['nome'] ?? '',
       grupo: map['grupo'] ?? '',
       status: map['status'] ?? '',
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Convidado.fromJson(String source) =>
-      Convidado.fromMap(json.decode(source));
 
   static const String pendente = "PENDENTE";
   static const String confirmado = "CONFIRMADO";

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../infra/models/convidado.dart';
 import '../../infra/models/evento.dart';
 import '../../infra/repositories/evento_repository.dart';
 
@@ -10,33 +11,47 @@ class ReceiveGuestController extends GetxController {
   final guestController = TextEditingController();
   final guestFocusNode = FocusNode();
 
-  final List<TextEditingController> companionControllers = [];
-  final List<FocusNode> companionFocusNodes = [];
+  List<TextEditingController> guestControllers = [];
+  List<FocusNode> guestFocusNodes = [];
 
-  final List<String> filteredSuggestions = [];
-  final List<String> usedNames = [];
+  List<String> filteredSuggestions = [];
+  List<String> usedNames = [];
+
+  List<Convidado> guestNames = [];
 
   bool showSuggestions = false;
 
+  String? id;
   Evento? evento;
+  Convidado? convidado;
   bool isLoading = false;
 
   @override
   void onInit() {
     super.onInit();
-    fetchEvento();
-    print('object');
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getUserId();
+    });
   }
 
-  Future<void> fetchEvento() async {
+  void getUserId() {
+    final uri = Uri.base;
+    final segments = uri.pathSegments;
+    id = segments.length > 1 ? segments[1] : null;
+
+    if (id != null) {
+      getEvento(id!);
+      getConvidado(id!);
+    } else {
+      isLoading = false;
+      update();
+    }
+  }
+
+  Future<void> getEvento(String userId) async {
     try {
       isLoading = true;
       update();
-      final userId = Get.parameters['id'] ?? 'nKUME3X48UhhOy6qJ0LM64N7H353';
-      // if (userId.isEmpty) {
-      //   throw Exception('ID do usuário não encontrado');
-      // }
-
       final eventos = await repository.getEventosByUserId(userId);
       if (eventos.isNotEmpty) {
         evento = eventos.first;
@@ -51,26 +66,37 @@ class ReceiveGuestController extends GetxController {
     }
   }
 
-  final List<String> listaTags = [
-    'Carlos',
-    'Ana',
-    'Annabelle',
-    'Maria',
-    'João',
-    'Pedro',
-    'Julia',
-  ];
+  Future<void> getConvidado(String id) async {
+    try {
+      isLoading = true;
+      update();
+
+      final fetchConvidados = await repository.getConvidadosByUserId(id);
+      if (fetchConvidados.isNotEmpty) {
+        guestNames = fetchConvidados;
+        convidado = fetchConvidados.first;
+      } else {
+        guestNames = [];
+        convidado = null;
+      }
+    } catch (e) {
+      print('Erro ao buscar convidados: $e');
+    } finally {
+      isLoading = false;
+      update();
+    }
+  }
 
   void addCompanionField() {
-    companionControllers.add(TextEditingController());
-    companionFocusNodes.add(FocusNode());
+    guestControllers.add(TextEditingController());
+    guestFocusNodes.add(FocusNode());
     update();
   }
 
   void removeCompanionField(int index) {
-    if (index >= 0 && index < companionControllers.length) {
-      companionControllers.removeAt(index);
-      companionFocusNodes.removeAt(index);
+    if (index >= 0 && index < guestControllers.length) {
+      guestControllers.removeAt(index);
+      guestFocusNodes.removeAt(index);
     }
 
     updateUsedNames();
@@ -84,10 +110,12 @@ class ReceiveGuestController extends GetxController {
       filteredSuggestions
         ..clear()
         ..addAll(
-          listaTags
-              .where((tag) =>
-                  tag.toLowerCase().contains(query.toLowerCase()) &&
-                  !usedNames.contains(tag))
+          guestNames
+              .where((guest) => guest.status == "Pendente")
+              .map((guest) => guest.nome)
+              .where((name) =>
+                  name.toLowerCase().contains(query.toLowerCase()) &&
+                  !usedNames.contains(name))
               .toList(),
         );
 
@@ -96,7 +124,7 @@ class ReceiveGuestController extends GetxController {
       showSuggestions = false;
       filteredSuggestions.clear();
     }
-    debugPrint("Sugestões disponíveis: ${filteredSuggestions.length}");
+
     update();
   }
 
@@ -108,8 +136,8 @@ class ReceiveGuestController extends GetxController {
   }
 
   bool isGuestNameComplete() {
-    String guestName = guestController.text.trim();
-    return listaTags.contains(guestName);
+    String guestName = guestController.text.toLowerCase().tr;
+    return guestNames.any((guest) => guest.nome.toLowerCase().tr == guestName);
   }
 
   void updateUsedNames() {
@@ -118,7 +146,7 @@ class ReceiveGuestController extends GetxController {
       ..addAll(
         [
           guestController.text.trim(),
-          ...companionControllers
+          ...guestControllers
               .map((controller) => controller.text.trim())
               .where((name) => name.isNotEmpty)
         ],

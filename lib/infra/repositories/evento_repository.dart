@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:festit_invited/infra/models/convidado.dart';
 
 import '../models/evento.dart';
 
@@ -7,11 +8,6 @@ class EventoRepository {
 
   Future<List<Evento>> getEventosByUserId(String userId) async {
     try {
-      final snaptest =
-          await firestore.collection('environments').doc('dev').get();
-
-      print(snaptest.data());
-
       final snapshot = await firestore
           .collection('environments')
           .doc('prod')
@@ -22,6 +18,25 @@ class EventoRepository {
 
       return snapshot.docs
           .map((doc) => Evento.fromMap(doc.data(), doc.id))
+          .toList();
+    } catch (e) {
+      print('Erro ao buscar eventos: $e');
+      return [];
+    }
+  }
+
+  Future<List<Convidado>> getConvidadosByUserId(String userId) async {
+    try {
+      final snapshot = await firestore
+          .collection('environments')
+          .doc('prod')
+          .collection('usuarios')
+          .doc(userId)
+          .collection('convidados')
+          .get();
+
+      return snapshot.docs
+          .map((doc) => Convidado.fromMap(doc.data(), doc.id))
           .toList();
     } catch (e) {
       print('Erro ao buscar eventos: $e');

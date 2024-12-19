@@ -90,7 +90,7 @@ class Evento {
           : null,
       convidados: map['convidados'] != null
           ? List<Convidado>.from(
-              map['convidados']?.map((x) => Convidado.fromMap(x)))
+              map['convidados']?.map((x) => Convidado.fromMap(x, id)))
           : null,
       tarefas: map['tarefas'] != null
           ? List<Tarefa>.from(map['tarefas']?.map((x) => Tarefa.fromMap(x)))
