@@ -6,7 +6,7 @@ import 'receive_guest_controller.dart';
 import 'widgets/body_receive_guest.dart';
 
 class ReceiveGuestPage extends GetView<ReceiveGuestController> {
-  static const route = '/r_c/id';
+  static const route = '/r_c/:id';
 
   const ReceiveGuestPage({super.key});
 
