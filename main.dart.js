@@ -38370,7 +38370,7 @@ s=A.iq(s,0,null)
 s=A.aRG(A.auZ(s.gea(s)))
 $.a_w=!0
 $.a_e=new A.adb(s,B.lV)
-return new A.x2("/r_c/id","Festit-convite",B.u6,B.Nc,B.NO,!1,new A.q7(new A.a0r()),$.aD3(),null)}}
+return new A.x2("/r_c/:id","Festit-convite",B.u6,B.Nc,B.NO,!1,new A.q7(new A.a0r()),$.aD3(),null)}}
 A.a0r.prototype={
 $0(){A.axX($.bR(),A.azh(),t.a6)},
 $S:0}
@@ -85691,7 +85691,7 @@ s($,"aSI","aDh",()=>A.lx())
 s($,"aSM","aDj",()=>A.lx())
 s($,"aUj","aE0",()=>A.lx())
 r($,"aS3","aD3",()=>{var q=null,p=t.z
-return A.a([A.a6x(q,q,q,B.k0,B.k1,B.ag,q,!1,q,!0,q,"/splash",!0,new A.a0n(),q,q,q,!0,!0,q,q,q,q,p),A.a6x(q,q,A.aGD(new A.a0o()),B.k0,B.k1,B.ag,q,!1,q,!0,q,"/r_c/id",!0,new A.a0p(),q,q,q,!0,!0,q,q,q,q,p),A.a6x(q,q,q,B.k0,B.k1,B.ag,q,!1,q,!0,q,"/confirma\xe7\xe3o_do_convidado",!0,new A.a0q(),q,q,q,!0,!0,q,q,q,q,p)],t.RT)})
+return A.a([A.a6x(q,q,q,B.k0,B.k1,B.ag,q,!1,q,!0,q,"/splash",!0,new A.a0n(),q,q,q,!0,!0,q,q,q,q,p),A.a6x(q,q,A.aGD(new A.a0o()),B.k0,B.k1,B.ag,q,!1,q,!0,q,"/r_c/:id",!0,new A.a0p(),q,q,q,!0,!0,q,q,q,q,p),A.a6x(q,q,q,B.k0,B.k1,B.ag,q,!1,q,!0,q,"/confirma\xe7\xe3o_do_convidado",!0,new A.a0q(),q,q,q,!0,!0,q,q,q,q,p)],t.RT)})
 r($,"aU5","avq",()=>new A.a4Q())
 s($,"aSX","avo",()=>new A.B())
 r($,"aIE","jJ",()=>{var q=new A.Mh()
