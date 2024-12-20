@@ -13,6 +13,22 @@ class Convidado {
     this.acompanhante,
   });
 
+  Convidado copyWith({
+    String? id,
+    String? nome,
+    String? grupo,
+    String? status,
+    String? acompanhante,
+  }) {
+    return Convidado(
+      id: id ?? this.id,
+      nome: nome ?? this.nome,
+      grupo: grupo ?? this.grupo,
+      status: status ?? this.status,
+      acompanhante: acompanhante ?? this.acompanhante,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 

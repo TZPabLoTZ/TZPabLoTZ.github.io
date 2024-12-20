@@ -37,8 +37,6 @@ class ReceiveGuestController extends GetxController {
   }
 
   void getUserId() {
-    // final uri = Uri.base;
-    // final segments = uri.pathSegments;
     window.location.href;
     debugPrint(window.location.href.split('/').last);
     userId = window.location.href.split('/').last;
@@ -174,9 +172,14 @@ class ReceiveGuestController extends GetxController {
         ),
       );
 
+      if (convidado.id!.isEmpty || convidado.grupo.isEmpty) {
+        print('Convidado não encontrado ou sem grupo.');
+        return;
+      }
+
       await repository.updateGuestStatus(
         userId,
-        convidado,
+        convidado.copyWith(status: status),
         status,
       );
 
