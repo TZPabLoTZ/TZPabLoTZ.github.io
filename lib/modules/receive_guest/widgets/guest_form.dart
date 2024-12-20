@@ -89,13 +89,35 @@ class GuestForm extends StatelessWidget {
                   SaveButton(
                     title: 'Sim, eu vou! :)',
                     color: AppColors.buttonLogin,
-                    onTap: () {},
+                    onTap: () async {
+                      String userId = control.userId!;
+                      String convidado = control.guestController.text.trim();
+                      String? acompanhante = control.guestControllers.isNotEmpty
+                          ? control.guestControllers.first.text.trim()
+                          : null;
+
+                      await control.updateGuestStatus(
+                        userId,
+                        convidado,
+                        'Confirmado',
+                        acompanhanteNome: acompanhante,
+                      );
+                    },
                   ),
                   const SizedBox(width: 12),
                   SaveButton(
                     title: 'Não posso ir :(',
                     color: AppColors.orange,
-                    onTap: () {},
+                    onTap: () async {
+                      String userId = control.userId!;
+                      String convidado = control.guestController.text.trim();
+
+                      await control.updateGuestStatuspending(
+                        userId,
+                        convidado,
+                        'Ausente',
+                      );
+                    },
                   ),
                 ],
               ),

@@ -2,7 +2,6 @@ import 'package:festit_invited/modules/receive_guest/receive_guest_controller.da
 import 'package:festit_invited/modules/receive_guest/receive_guest_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:get/get.dart';
 
 import 'app_routes.dart';
@@ -12,7 +11,7 @@ class AppWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    setUrlStrategy(PathUrlStrategy());
+    // setUrlStrategy(PathUrlStrategy());
 
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,

@@ -3,12 +3,14 @@ class Convidado {
   String nome;
   String grupo;
   String status;
+  String? acompanhante;
 
   Convidado({
     this.id,
     required this.nome,
     required this.grupo,
     required this.status,
+    this.acompanhante,
   });
 
   Map<String, dynamic> toMap() {
@@ -20,6 +22,9 @@ class Convidado {
     result.addAll({'nome': nome});
     result.addAll({'grupo': grupo});
     result.addAll({'status': status});
+    if (acompanhante != null) {
+      result.addAll({'acompanhante': acompanhante});
+    }
 
     return result;
   }
@@ -30,6 +35,7 @@ class Convidado {
       nome: map['nome'] ?? '',
       grupo: map['grupo'] ?? '',
       status: map['status'] ?? '',
+      acompanhante: map['acompanhante'],
     );
   }
 

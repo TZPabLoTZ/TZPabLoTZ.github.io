@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,7 +23,7 @@ class ReceiveGuestController extends GetxController {
 
   bool showSuggestions = false;
 
-  String? id;
+  String? userId;
   Evento? evento;
   Convidado? convidado;
   bool isLoading = false;
@@ -35,13 +37,15 @@ class ReceiveGuestController extends GetxController {
   }
 
   void getUserId() {
-    final uri = Uri.base;
-    final segments = uri.pathSegments;
-    id = segments.length > 1 ? segments[1] : null;
+    // final uri = Uri.base;
+    // final segments = uri.pathSegments;
+    window.location.href;
+    debugPrint(window.location.href.split('/').last);
+    userId = window.location.href.split('/').last;
 
-    if (id != null) {
-      getEvento(id!);
-      getConvidado(id!);
+    if (userId != null) {
+      getEvento(userId!);
+      getConvidado(userId!);
     } else {
       isLoading = false;
       update();
@@ -151,5 +155,68 @@ class ReceiveGuestController extends GetxController {
               .where((name) => name.isNotEmpty)
         ],
       );
+  }
+
+  Future<void> updateGuestStatus(
+    String userId,
+    String nome,
+    String status, {
+    String? acompanhanteNome,
+  }) async {
+    try {
+      final convidado = guestNames.firstWhere(
+        (guest) => guest.nome == nome,
+        orElse: () => Convidado(
+          id: '',
+          nome: '',
+          grupo: '',
+          status: '',
+        ),
+      );
+
+      await repository.updateGuestStatus(
+        userId,
+        convidado,
+        status,
+      );
+
+      if (acompanhanteNome != null && acompanhanteNome.isNotEmpty) {
+        final acompanhante = Convidado(
+          id: null,
+          nome: acompanhanteNome,
+          grupo: convidado.grupo,
+          status: 'Ausente',
+          acompanhante: nome,
+        );
+
+        await repository.addGuest(userId, acompanhante);
+      }
+
+      print('Status do convidado atualizado com sucesso!');
+    } catch (e) {
+      print('Erro ao atualizar status do convidado: $e');
+    }
+  }
+
+  Future<void> updateGuestStatuspending(
+    String userId,
+    String nome,
+    String status,
+  ) async {
+    try {
+      final convidado = guestNames.firstWhere(
+        (guest) => guest.nome == nome,
+      );
+
+      await repository.updateGuestStatus(
+        userId,
+        convidado,
+        status,
+      );
+
+      print('Status do convidado atualizado com sucesso!');
+    } catch (e) {
+      print('Erro ao atualizar status do convidado: $e');
+    }
   }
 }

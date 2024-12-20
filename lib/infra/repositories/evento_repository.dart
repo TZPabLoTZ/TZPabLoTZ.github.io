@@ -49,22 +49,50 @@ class EventoRepository {
     }
   }
 
-  Future<List<Convidado>> updateGuest(String userId) async {
+  Future<void> updateGuestStatus(
+    String userId,
+    Convidado convidado,
+    String status,
+  ) async {
     try {
-      final snapshot = await firestore
+      final docRef = firestore
           .collection('environments')
           .doc('prod')
           .collection('usuarios')
           .doc(userId)
           .collection('convidados')
-          .get();
+          .doc(convidado.id);
 
-      return snapshot.docs
-          .map((doc) => Convidado.fromMap(doc.data(), doc.id))
-          .toList();
+      await docRef.update({
+        'status': status,
+        if (convidado.acompanhante != null)
+          'acompanhanteDeQuem': convidado.acompanhante,
+      });
+
+      print('Status do convidado atualizado com sucesso!');
     } catch (e) {
-      print('Erro ao buscar eventos: $e');
-      return [];
+      print('Erro ao atualizar status do convidado: $e');
+    }
+  }
+
+  Future<void> addGuest(
+    String userId,
+    Convidado convidado,
+  ) async {
+    try {
+      final docRef = firestore
+          .collection('environments')
+          .doc('prod')
+          .collection('usuarios')
+          .doc(userId)
+          .collection('convidados')
+          .doc();
+
+      await docRef.set(convidado.toMap());
+
+      print('Convidado ou acompanhante adicionado com sucesso!');
+    } catch (e) {
+      print('Erro ao adicionar convidado: $e');
     }
   }
 }
