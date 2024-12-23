@@ -36,6 +36,13 @@ class ReceiveGuestController extends GetxController {
     });
   }
 
+  String? idLink;
+
+  void setUserId(String id) {
+    idLink = id;
+    update();
+  }
+
   void getUserId() {
     window.location.href;
     debugPrint(window.location.href.split('/').last);
@@ -44,6 +51,7 @@ class ReceiveGuestController extends GetxController {
     if (userId != null) {
       getEvento(userId!);
       getConvidado(userId!);
+      Get.find().setUserId(userId);
     } else {
       isLoading = false;
       update();
@@ -155,26 +163,31 @@ class ReceiveGuestController extends GetxController {
       );
   }
 
-  Future<void> updateGuestStatus(
+  Future<bool> updateGuestStatus(
     String userId,
     String nome,
     String status, {
     String? acompanhanteNome,
   }) async {
     try {
+      print('Buscando convidado com nome: "$nome"');
       final convidado = guestNames.firstWhere(
-        (guest) => guest.nome == nome,
-        orElse: () => Convidado(
-          id: '',
-          nome: '',
-          grupo: '',
-          status: '',
-        ),
+        (guest) => guest.nome.trim().toLowerCase() == nome.trim().toLowerCase(),
+        orElse: () {
+          print('Convidado não encontrado na lista: $nome');
+          return Convidado(
+            id: '',
+            nome: '',
+            grupo: '',
+            status: '',
+          );
+        },
       );
 
       if (convidado.id!.isEmpty || convidado.grupo.isEmpty) {
-        print('Convidado não encontrado ou sem grupo.');
-        return;
+        debugPrint(
+            'Convidado encontrado, mas id ou grupo está vazio: ${convidado.toMap()}');
+        return false;
       }
 
       await repository.updateGuestStatus(
@@ -188,7 +201,7 @@ class ReceiveGuestController extends GetxController {
           id: null,
           nome: acompanhanteNome,
           grupo: convidado.grupo,
-          status: 'Ausente',
+          status: 'Confirmado',
           acompanhante: nome,
         );
 
@@ -196,8 +209,10 @@ class ReceiveGuestController extends GetxController {
       }
 
       print('Status do convidado atualizado com sucesso!');
+      return true;
     } catch (e) {
       print('Erro ao atualizar status do convidado: $e');
+      return false;
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:festit_invited/modules/guest_confirmation/guest_confirmation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -96,12 +97,22 @@ class GuestForm extends StatelessWidget {
                           ? control.guestControllers.first.text.trim()
                           : null;
 
-                      await control.updateGuestStatus(
+                      bool result = await control.updateGuestStatus(
                         userId,
                         convidado,
                         'Confirmado',
                         acompanhanteNome: acompanhante,
                       );
+
+                      if (result) {
+                        Get.offAndToNamed(GuestConfirmationPage.route);
+                      } else {
+                        Get.snackbar(
+                          'Erro',
+                          'Erro ao atualizar o status do convidado.',
+                          snackPosition: SnackPosition.BOTTOM,
+                        );
+                      }
                     },
                   ),
                   const SizedBox(width: 12),

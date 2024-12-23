@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'event_details_card.dart';
+import '../../../widgets/event_details_card.dart';
 import 'guest_form.dart';
 
 class BodyReceiveGuest extends StatelessWidget {

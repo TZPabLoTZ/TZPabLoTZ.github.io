@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
-import '../../../themes/app_colors.dart';
-import '../../../widgets/text_default.dart';
-import '../receive_guest_controller.dart';
+import '../modules/receive_guest/receive_guest_controller.dart';
+import '../themes/app_colors.dart';
+import 'text_default.dart';
 
 class EventDetailsCard extends StatelessWidget {
   const EventDetailsCard({super.key});
