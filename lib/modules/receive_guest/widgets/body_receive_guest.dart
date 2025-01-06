@@ -8,7 +8,10 @@ class BodyReceiveGuest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final scrollController = ScrollController();
+
     return SingleChildScrollView(
+      controller: scrollController,
       physics: const BouncingScrollPhysics(),
       child: SizedBox(
         height: MediaQuery.of(context).size.height,
@@ -18,7 +21,7 @@ class BodyReceiveGuest extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const EventDetailsCard(),
-            const GuestForm(),
+            GuestForm(controller: scrollController),
             Padding(
               padding: const EdgeInsets.only(bottom: 30),
               child: GestureDetector(
