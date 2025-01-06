@@ -13,13 +13,11 @@ class GuestForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<ReceiveGuestController>(
-      builder: (control) {
-        return Padding(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-          ),
-          child: Column(
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: GetBuilder<ReceiveGuestController>(
+        builder: (control) {
+          return Column(
             children: [
               const SizedBox(height: 18),
               const TextDefault(
@@ -139,9 +137,9 @@ class GuestForm extends StatelessWidget {
                 ),
               ],
             ],
-          ),
-        );
-      },
+          );
+        },
+      ),
     );
   }
 }
