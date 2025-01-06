@@ -237,16 +237,4 @@ class ReceiveGuestController extends GetxController {
       print('Erro ao atualizar status do convidado: $e');
     }
   }
-
-  void scrollToFocusedField(BuildContext context, ScrollController controller) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (FocusScope.of(context).focusedChild != null) {
-        controller.animateTo(
-          controller.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      }
-    });
-  }
 }

@@ -21,7 +21,7 @@ class BodyReceiveGuest extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             const EventDetailsCard(),
-            GuestForm(controller: scrollController),
+            const GuestForm(),
             Padding(
               padding: const EdgeInsets.only(bottom: 30),
               child: GestureDetector(
