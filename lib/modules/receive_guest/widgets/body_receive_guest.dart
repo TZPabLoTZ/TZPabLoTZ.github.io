@@ -21,9 +21,12 @@ class BodyReceiveGuest extends StatelessWidget {
             const GuestForm(),
             Padding(
               padding: const EdgeInsets.only(bottom: 30),
-              child: Image.asset(
-                'assets/images/link.png',
-                scale: 3,
+              child: GestureDetector(
+                onTap: () {},
+                child: Image.asset(
+                  'assets/images/link.png',
+                  scale: 3,
+                ),
               ),
             ),
           ],

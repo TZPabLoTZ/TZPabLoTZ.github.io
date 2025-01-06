@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:intl/intl.dart';
 
 import '../modules/receive_guest/receive_guest_controller.dart';
 import '../themes/app_colors.dart';
@@ -33,7 +34,9 @@ class EventDetailsCard extends StatelessWidget {
                 color: AppColors.textSecondary,
               ),
               TextDefault(
-                text: contol.evento?.data.toString() ?? 'Sem dados',
+                text: contol.evento?.data != null
+                    ? '${DateFormat('dd/MM/yyyy').format(contol.evento!.data!)} às ${DateFormat('HH:mm').format(contol.evento!.data!)}'
+                    : 'Sem dados',
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
                 fontStyle: FontStyle.italic,
