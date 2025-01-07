@@ -36,16 +36,6 @@ class ReceiveGuestController extends GetxController {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getUserId();
     });
-
-    guestFocusNode.addListener(() {
-      if (guestFocusNode.hasFocus) {
-        scrollController.animateTo(
-          scrollController.position.pixels,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-      }
-    });
   }
 
   String? idLink;

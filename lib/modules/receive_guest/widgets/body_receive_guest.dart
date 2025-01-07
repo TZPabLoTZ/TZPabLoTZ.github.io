@@ -8,32 +8,26 @@ class BodyReceiveGuest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = ScrollController();
-
-    return SingleChildScrollView(
-      controller: scrollController,
-      physics: const BouncingScrollPhysics(),
-      child: SizedBox(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const EventDetailsCard(),
-            const GuestForm(),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: GestureDetector(
-                onTap: () {},
-                child: Image.asset(
-                  'assets/images/link.png',
-                  scale: 3,
-                ),
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const EventDetailsCard(),
+          const GuestForm(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: GestureDetector(
+              onTap: () {},
+              child: Image.asset(
+                'assets/images/link.png',
+                scale: 3.2,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

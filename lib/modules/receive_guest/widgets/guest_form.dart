@@ -30,7 +30,7 @@ class GuestForm extends StatelessWidget {
               SearchField(
                 textController: control.guestController,
                 hintText: 'Digite aqui o seu primeiro nome',
-                // focusNode: control.guestFocusNode,
+                focusNode: control.guestFocusNode,
                 onPrefix: () {},
                 onChanged: (value) {
                   control.updateSuggestions(value, -1);
@@ -42,14 +42,14 @@ class GuestForm extends StatelessWidget {
                   (entry) {
                     final index = entry.key;
                     final textController = entry.value;
-                    // final focusNode = control.guestFocusNodes[index];
+                    final focusNode = control.guestFocusNodes[index];
 
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 6),
                       child: SearchField(
                         textController: textController,
                         hintText: 'Digite o nome do acompanhante',
-                        // focusNode: focusNode,
+                        focusNode: focusNode,
                         onPrefix: () {},
                         onSuffix: () => control.removeCompanionField(index),
                       ),

@@ -11,7 +11,7 @@ class SearchField extends StatelessWidget {
   final Function(String)? onChanged;
   final Function()? onSuffix;
   final Function()? onPrefix;
-  final FocusNode? focusNode;
+  final FocusNode focusNode;
 
   const SearchField({
     super.key,
@@ -20,7 +20,7 @@ class SearchField extends StatelessWidget {
     this.onChanged,
     this.onSuffix,
     this.onPrefix,
-    this.focusNode,
+    required this.focusNode,
   });
 
   @override
@@ -78,7 +78,7 @@ class SearchField extends StatelessWidget {
                 ),
               ),
             ),
-            if (focusNode!.hasFocus &&
+            if (focusNode.hasFocus &&
                 controller.showSuggestions &&
                 controller.filteredSuggestions.isNotEmpty)
               ConstrainedBox(

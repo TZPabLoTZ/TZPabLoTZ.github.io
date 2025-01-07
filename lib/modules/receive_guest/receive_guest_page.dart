@@ -14,10 +14,7 @@ class ReceiveGuestPage extends GetView<ReceiveGuestController> {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: AppColors.white,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: BodyReceiveGuest(),
-      ),
+      body: BodyReceiveGuest(),
     );
   }
 }
