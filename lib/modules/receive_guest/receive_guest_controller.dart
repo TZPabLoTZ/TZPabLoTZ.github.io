@@ -10,8 +10,10 @@ import '../../infra/repositories/evento_repository.dart';
 class ReceiveGuestController extends GetxController {
   final repository = EventoRepository();
 
-  final guestController = TextEditingController();
-  final guestFocusNode = FocusNode();
+  final scrollController = ScrollController();
+
+  TextEditingController guestController = TextEditingController();
+  FocusNode guestFocusNode = FocusNode();
 
   List<TextEditingController> guestControllers = [];
   List<FocusNode> guestFocusNodes = [];
@@ -33,6 +35,16 @@ class ReceiveGuestController extends GetxController {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       getUserId();
+    });
+
+    guestFocusNode.addListener(() {
+      if (guestFocusNode.hasFocus) {
+        scrollController.animateTo(
+          scrollController.position.pixels,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
     });
   }
 
