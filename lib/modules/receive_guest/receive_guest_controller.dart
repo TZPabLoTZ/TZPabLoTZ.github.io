@@ -100,9 +100,15 @@ class ReceiveGuestController extends GetxController {
   }
 
   void addCompanionField() {
-    guestControllers.add(TextEditingController());
-    guestFocusNodes.add(FocusNode());
-    update();
+    int? guestLimit = evento?.qtd_acompanhante;
+
+    if (guestLimit == null || guestControllers.length < guestLimit) {
+      guestControllers.add(TextEditingController());
+      guestFocusNodes.add(FocusNode());
+      update();
+    } else {
+      print("Limite de acompanhantes atingido.");
+    }
   }
 
   void removeCompanionField(int index) {
@@ -149,6 +155,7 @@ class ReceiveGuestController extends GetxController {
 
   bool isGuestNameComplete() {
     String guestName = guestController.text.toLowerCase().tr;
+
     return guestNames.any((guest) => guest.nome.toLowerCase().tr == guestName);
   }
 

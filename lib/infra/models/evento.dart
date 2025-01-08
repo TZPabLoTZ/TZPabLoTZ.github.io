@@ -10,6 +10,7 @@ class Evento {
   String? tipo;
   String? endereco;
   double? orcamento;
+  int? qtd_acompanhante;
   DateTime? data;
   DateTime? data_criacao;
   DateTime? data_atualizacao;
@@ -21,9 +22,10 @@ class Evento {
     this.nome,
     this.cover_url,
     this.tipo,
-    this.orcamento,
-    this.data,
     this.endereco,
+    this.orcamento,
+    this.qtd_acompanhante,
+    this.data,
     this.data_criacao,
     this.data_atualizacao,
     this.convidados,
@@ -50,6 +52,9 @@ class Evento {
     }
     if (orcamento != null) {
       result.addAll({'orcamento': orcamento});
+    }
+    if (qtd_acompanhante != null) {
+      result.addAll({'qtd_acompanhante': qtd_acompanhante});
     }
     if (data != null) {
       result.addAll({'data': data!.millisecondsSinceEpoch});
@@ -79,6 +84,7 @@ class Evento {
       tipo: map['tipo'],
       endereco: map['endereco'],
       orcamento: map['orcamento']?.toDouble(),
+      qtd_acompanhante: map['qtd_acompanhante']?.toInt(),
       data: map['data'] != null
           ? DateTime.fromMillisecondsSinceEpoch(map['data'])
           : null,

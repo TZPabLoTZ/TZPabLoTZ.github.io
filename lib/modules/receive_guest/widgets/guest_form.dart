@@ -32,6 +32,9 @@ class GuestForm extends StatelessWidget {
                 hintText: 'Digite aqui o seu primeiro nome',
                 focusNode: control.guestFocusNode,
                 onPrefix: () {},
+                onFieldSubmitted: (value) {
+                  FocusScope.of(context).requestFocus(control.guestFocusNode);
+                },
                 onChanged: (value) {
                   control.updateSuggestions(value, -1);
                 },
@@ -136,6 +139,7 @@ class GuestForm extends StatelessWidget {
                   ],
                 ),
               ],
+              if (control.isGuestNameComplete()) const SizedBox(height: 100),
             ],
           );
         },

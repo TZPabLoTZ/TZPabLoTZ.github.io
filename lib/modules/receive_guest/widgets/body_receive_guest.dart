@@ -1,3 +1,5 @@
+import 'dart:js' as js;
+
 import 'package:flutter/material.dart';
 
 import '../../../widgets/event_details_card.dart';
@@ -12,15 +14,33 @@ class BodyReceiveGuest extends StatelessWidget {
       height: MediaQuery.of(context).size.height,
       width: MediaQuery.of(context).size.width,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.min,
         children: [
           const EventDetailsCard(),
-          const GuestForm(),
+          Expanded(
+            child: Center(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.05,
+                    ),
+                    const GuestForm(),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.12,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           Padding(
-            padding: const EdgeInsets.only(bottom: 30),
+            padding: const EdgeInsets.only(bottom: 20, top: 12),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () {
+                openUrlInSamePage(
+                    'https://play.google.com/store/apps/details?id=br.com.festit.app');
+              },
               child: Image.asset(
                 'assets/images/link.png',
                 scale: 3.2,
@@ -31,4 +51,8 @@ class BodyReceiveGuest extends StatelessWidget {
       ),
     );
   }
+}
+
+void openUrlInSamePage(String url) {
+  js.context.callMethod('eval', ['window.location.href="$url";']);
 }

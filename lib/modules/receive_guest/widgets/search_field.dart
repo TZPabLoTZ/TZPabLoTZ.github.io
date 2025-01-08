@@ -12,6 +12,7 @@ class SearchField extends StatelessWidget {
   final Function()? onSuffix;
   final Function()? onPrefix;
   final FocusNode focusNode;
+  final Function(String)? onFieldSubmitted;
 
   const SearchField({
     super.key,
@@ -21,6 +22,7 @@ class SearchField extends StatelessWidget {
     this.onSuffix,
     this.onPrefix,
     required this.focusNode,
+    this.onFieldSubmitted,
   });
 
   @override
@@ -36,8 +38,9 @@ class SearchField extends StatelessWidget {
             Container(
               width: screenWidth > 600 ? 500 : screenWidth * 0.9,
               constraints: const BoxConstraints(maxWidth: 600),
-              child: TextField(
+              child: TextFormField(
                 focusNode: focusNode,
+                onFieldSubmitted: onFieldSubmitted,
                 onChanged: (value) => onChanged?.call(value),
                 controller: textController,
                 style: TextStyle(fontSize: screenWidth > 600 ? 16 : 14),
