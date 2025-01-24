@@ -1,3 +1,4 @@
+import 'package:festit_invited/widgets/images_link.dart';
 import 'package:flutter/material.dart';
 
 import '../../../themes/app_colors.dart';
@@ -43,13 +44,7 @@ class BodyGuestConfirmation extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 30),
-              child: Image.asset(
-                'assets/images/link.png',
-                scale: 3,
-              ),
-            ),
+            const ImagesLink(),
           ],
         ),
       ),

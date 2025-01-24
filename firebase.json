@@ -3,12 +3,27 @@
     "platforms": {
       "dart": {
         "lib/firebase_options.dart": {
-          "projectId": "festit-c0636",
+          "projectId": "festit-invited",
           "configurations": {
-            "web": "1:133375235827:web:83d0bcdde030eb6b17c986"
+            "web": "1:133375235827:web:502384859e425e2f17c986"
           }
         }
       }
     }
+  },
+  "hosting": {
+    "site": "festit-invited",
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }

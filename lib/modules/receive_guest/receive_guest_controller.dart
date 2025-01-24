@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../infra/models/convidado.dart';
 import '../../infra/models/evento.dart';
 import '../../infra/repositories/evento_repository.dart';
+import '../guest_confirmation/guest_confirmation_page.dart';
 
 class ReceiveGuestController extends GetxController {
   final repository = EventoRepository();
@@ -53,7 +54,8 @@ class ReceiveGuestController extends GetxController {
     if (userId != null) {
       getEvento(userId!);
       getConvidado(userId!);
-      Get.find().setUserId(userId);
+      final receiveGuestController = Get.find<ReceiveGuestController>();
+      receiveGuestController.setUserId(userId!);
     } else {
       isLoading = false;
       update();
@@ -71,7 +73,7 @@ class ReceiveGuestController extends GetxController {
         evento = null;
       }
     } catch (e) {
-      print('Erro ao buscar evento: $e');
+      debugPrint('Erro ao buscar evento: $e');
     } finally {
       isLoading = false;
       update();
@@ -92,7 +94,7 @@ class ReceiveGuestController extends GetxController {
         convidado = null;
       }
     } catch (e) {
-      print('Erro ao buscar convidados: $e');
+      debugPrint('Erro ao buscar convidados: $e');
     } finally {
       isLoading = false;
       update();
@@ -107,7 +109,7 @@ class ReceiveGuestController extends GetxController {
       guestFocusNodes.add(FocusNode());
       update();
     } else {
-      print("Limite de acompanhantes atingido.");
+      debugPrint("Limite de acompanhantes atingido.");
     }
   }
 
@@ -121,7 +123,7 @@ class ReceiveGuestController extends GetxController {
     update();
   }
 
-  void updateSuggestions(String query, int index) {
+  void updateSuggestions(String query) {
     updateUsedNames();
 
     if (query.length >= 2) {
@@ -154,9 +156,7 @@ class ReceiveGuestController extends GetxController {
   }
 
   bool isGuestNameComplete() {
-    String guestName = guestController.text.toLowerCase().tr;
-
-    return guestNames.any((guest) => guest.nome.toLowerCase().tr == guestName);
+    return guestController.text.trim().length >= 3;
   }
 
   void updateUsedNames() {
@@ -176,24 +176,36 @@ class ReceiveGuestController extends GetxController {
     String userId,
     String nome,
     String status, {
-    String? acompanhanteNome,
+    List<String>? acompanhantesNomes,
   }) async {
     try {
-      print('Buscando convidado com nome: "$nome"');
-      final convidado = guestNames.firstWhere(
-        (guest) => guest.nome.trim().toLowerCase() == nome.trim().toLowerCase(),
-        orElse: () {
-          print('Convidado não encontrado na lista: $nome');
-          return Convidado(
-            id: '',
-            nome: '',
-            grupo: '',
-            status: '',
-          );
-        },
-      );
+      debugPrint('Buscando convidado com nome: "$nome"');
+      Convidado? convidado;
 
-      if (convidado.id!.isEmpty || convidado.grupo.isEmpty) {
+      for (var guest in guestNames) {
+        if (guest.nome.trim().toLowerCase() == nome.trim().toLowerCase()) {
+          convidado = guest;
+          break;
+        }
+      }
+
+      if (convidado == null) {
+        debugPrint('Convidado não encontrado: $nome. Criando novo convidado.');
+
+        convidado = Convidado(
+          id: null,
+          nome: nome,
+          grupo: 'Sem grupo, Adicionado via convite',
+          status: status,
+          acompanhante: null,
+        );
+
+        await repository.addGuest(userId, convidado);
+
+        return true;
+      }
+
+      if (convidado.id == null || convidado.grupo.isEmpty) {
         debugPrint(
             'Convidado encontrado, mas id ou grupo está vazio: ${convidado.toMap()}');
         return false;
@@ -205,45 +217,103 @@ class ReceiveGuestController extends GetxController {
         status,
       );
 
-      if (acompanhanteNome != null && acompanhanteNome.isNotEmpty) {
-        final acompanhante = Convidado(
-          id: null,
-          nome: acompanhanteNome,
-          grupo: convidado.grupo,
-          status: 'Confirmado',
-          acompanhante: nome,
-        );
+      if (acompanhantesNomes != null && acompanhantesNomes.isNotEmpty) {
+        for (var acompanhanteNome in acompanhantesNomes) {
+          final acompanhante = Convidado(
+            id: null,
+            nome: acompanhanteNome,
+            grupo: convidado.grupo,
+            status: 'Confirmado',
+            acompanhante: nome,
+          );
 
-        await repository.addGuest(userId, acompanhante);
+          await repository.addGuest(userId, acompanhante);
+        }
       }
 
-      print('Status do convidado atualizado com sucesso!');
+      debugPrint('Status do convidado e acompanhantes atualizado com sucesso!');
       return true;
     } catch (e) {
-      print('Erro ao atualizar status do convidado: $e');
+      debugPrint('Erro ao atualizar status do convidado: $e');
       return false;
     }
   }
 
-  Future<void> updateGuestStatuspending(
+  Future<bool> updateGuestStatusPending(
     String userId,
     String nome,
     String status,
   ) async {
     try {
-      final convidado = guestNames.firstWhere(
-        (guest) => guest.nome == nome,
-      );
+      for (var guest in guestNames) {
+        if (guest.nome == nome) {
+          convidado = guest;
+          break;
+        }
+      }
 
-      await repository.updateGuestStatus(
-        userId,
-        convidado,
-        status,
-      );
-
-      print('Status do convidado atualizado com sucesso!');
+      if (convidado != null) {
+        await repository.updateGuestStatus(
+          userId,
+          convidado!,
+          status,
+        );
+        debugPrint('Status do convidado atualizado com sucesso!');
+        return true;
+      } else {
+        debugPrint('Convidado não encontrado.');
+        return false;
+      }
     } catch (e) {
-      print('Erro ao atualizar status do convidado: $e');
+      debugPrint('Erro ao atualizar status do convidado: $e');
+      return true;
+    }
+  }
+
+  Future<void> confirmPresence() async {
+    String convidado = guestController.text.trim();
+    List<String> acompanhantesNomes = guestControllers
+        .map((controller) => controller.text.trim())
+        .where((nome) => nome.isNotEmpty)
+        .toList();
+
+    bool result = await updateGuestStatus(
+      userId!,
+      convidado,
+      'Confirmado',
+      acompanhantesNomes: acompanhantesNomes,
+    );
+
+    if (result) {
+      Get.offAndToNamed(GuestConfirmationPage.route);
+    } else {
+      Get.snackbar(
+        'Erro',
+        'Erro ao atualizar o status do convidado.',
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(12),
+      );
+    }
+  }
+
+  Future<void> declinePresence() async {
+    String convidado = guestController.text.trim();
+
+    bool result = await updateGuestStatusPending(
+      userId!,
+      convidado,
+      'Ausente',
+    );
+
+    if (result) {
+      Get.offAndToNamed(GuestConfirmationPage.route);
+    } else {
+      Get.snackbar(
+        'Erro',
+        'Erro ao atualizar o status do convidado.',
+        snackPosition: SnackPosition.BOTTOM,
+        margin: const EdgeInsets.all(12),
+      );
     }
   }
 }

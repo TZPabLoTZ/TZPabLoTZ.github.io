@@ -1,8 +1,7 @@
-import 'dart:js' as js;
-
 import 'package:flutter/material.dart';
 
 import '../../../widgets/event_details_card.dart';
+import '../../../widgets/images_link.dart';
 import 'guest_form.dart';
 
 class BodyReceiveGuest extends StatelessWidget {
@@ -34,25 +33,9 @@ class BodyReceiveGuest extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20, top: 12),
-            child: GestureDetector(
-              onTap: () {
-                openUrlInSamePage(
-                    'https://play.google.com/store/apps/details?id=br.com.festit.app');
-              },
-              child: Image.asset(
-                'assets/images/link.png',
-                scale: 3.2,
-              ),
-            ),
-          ),
+          const ImagesLink(),
         ],
       ),
     );
   }
-}
-
-void openUrlInSamePage(String url) {
-  js.context.callMethod('eval', ['window.location.href="$url";']);
 }

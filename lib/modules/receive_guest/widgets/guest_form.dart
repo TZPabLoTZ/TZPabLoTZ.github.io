@@ -1,4 +1,3 @@
-import 'package:festit_invited/modules/guest_confirmation/guest_confirmation_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,7 +35,7 @@ class GuestForm extends StatelessWidget {
                   FocusScope.of(context).requestFocus(control.guestFocusNode);
                 },
                 onChanged: (value) {
-                  control.updateSuggestions(value, -1);
+                  control.updateSuggestions(value);
                 },
               ),
               const SizedBox(height: 6),
@@ -59,35 +58,39 @@ class GuestForm extends StatelessWidget {
                     );
                   },
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: InkWell(
-                    onTap: control.addCompanionField,
-                    borderRadius: BorderRadius.circular(8),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: AppColors.purple,
-                            radius: 10,
-                            child: Icon(
-                              Icons.add,
-                              size: 14,
-                              color: AppColors.white,
+                if (control.evento?.qtd_acompanhante != null &&
+                    control.guestControllers.length <
+                        control.evento!.qtd_acompanhante!) ...[
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: InkWell(
+                      onTap: control.addCompanionField,
+                      borderRadius: BorderRadius.circular(8),
+                      child: const Padding(
+                        padding: EdgeInsets.all(8),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: AppColors.purple,
+                              radius: 10,
+                              child: Icon(
+                                Icons.add,
+                                size: 14,
+                                color: AppColors.white,
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 12),
-                          Text(
-                            'Adicionar acompanhante',
-                            style: TextStyle(color: AppColors.purple),
-                          ),
-                        ],
+                            SizedBox(width: 12),
+                            Text(
+                              'Adicionar acompanhante',
+                              style: TextStyle(color: AppColors.purple),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
                 const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -95,46 +98,13 @@ class GuestForm extends StatelessWidget {
                     SaveButton(
                       title: 'Sim, eu vou! :)',
                       color: AppColors.buttonLogin,
-                      onTap: () async {
-                        String userId = control.userId!;
-                        String convidado = control.guestController.text.trim();
-                        String? acompanhante =
-                            control.guestControllers.isNotEmpty
-                                ? control.guestControllers.first.text.trim()
-                                : null;
-
-                        bool result = await control.updateGuestStatus(
-                          userId,
-                          convidado,
-                          'Confirmado',
-                          acompanhanteNome: acompanhante,
-                        );
-
-                        if (result) {
-                          Get.offAndToNamed(GuestConfirmationPage.route);
-                        } else {
-                          Get.snackbar(
-                            'Erro',
-                            'Erro ao atualizar o status do convidado.',
-                            snackPosition: SnackPosition.BOTTOM,
-                          );
-                        }
-                      },
+                      onTap: () => control.confirmPresence(),
                     ),
                     const SizedBox(width: 12),
                     SaveButton(
                       title: 'Não posso ir :(',
                       color: AppColors.orange,
-                      onTap: () async {
-                        String userId = control.userId!;
-                        String convidado = control.guestController.text.trim();
-
-                        await control.updateGuestStatuspending(
-                          userId,
-                          convidado,
-                          'Ausente',
-                        );
-                      },
+                      onTap: () => control.declinePresence(),
                     ),
                   ],
                 ),

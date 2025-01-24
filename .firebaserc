@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "festit-c0636"
+  },
+  "targets": {
+    "festit-c0636": {
+      "hosting": {
+        "festit-web": [
+          "[NOME_DO_SITE_REAL]",
+          "festit-invited",
+          "festit-web"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
