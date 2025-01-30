@@ -1,6 +1,7 @@
-import 'package:festit_invited/themes/app_colors.dart';
-import 'package:festit_invited/themes/app_styles.dart';
 import 'package:flutter/material.dart';
+
+import '../themes/app_colors.dart';
+import '../themes/app_styles.dart';
 
 class SaveButton extends StatelessWidget {
   final String title;

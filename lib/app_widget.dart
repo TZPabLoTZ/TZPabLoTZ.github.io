@@ -1,10 +1,10 @@
-import 'package:festit_invited/modules/receive_guest/receive_guest_controller.dart';
-import 'package:festit_invited/modules/receive_guest/receive_guest_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 
 import 'app_routes.dart';
+import 'modules/receive_guest/receive_guest_controller.dart';
+import 'modules/splash/splash_page.dart';
 
 class AppWidget extends StatelessWidget {
   const AppWidget({super.key});
@@ -17,7 +17,7 @@ class AppWidget extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Festit-convite',
       getPages: AppRoutes.pages,
-      initialRoute: ReceiveGuestPage.route,
+      initialRoute: SplashPage.route,
       initialBinding: BindingsBuilder(() {
         Get.put(ReceiveGuestController());
       }),

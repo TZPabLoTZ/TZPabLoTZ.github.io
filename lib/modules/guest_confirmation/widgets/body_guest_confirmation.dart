@@ -1,8 +1,8 @@
-import 'package:festit_invited/widgets/images_link.dart';
 import 'package:flutter/material.dart';
 
 import '../../../themes/app_colors.dart';
 import '../../../widgets/event_details_card.dart';
+import '../../../widgets/images_link.dart';
 import '../../../widgets/text_default.dart';
 
 class BodyGuestConfirmation extends StatelessWidget {

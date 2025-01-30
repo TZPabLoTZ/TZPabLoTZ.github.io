@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import './splash_controller.dart';
-
-class SplashPage extends GetView<SplashController> {
+class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
 
-  static const route = '/splash';
+  static const route = '/';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Splash'),
+      backgroundColor: Colors.white,
+      body: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image.asset(
+              "assets/images/logo_purple.png",
+              width: MediaQuery.of(context).size.width * 0.6,
+            )
+          ],
+        ),
       ),
-      body: Container(),
     );
   }
 }

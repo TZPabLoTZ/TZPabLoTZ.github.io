@@ -1,9 +1,10 @@
 import 'dart:io';
 import 'dart:js' as js;
 
-import 'package:festit_invited/app_widget.dart';
 import 'package:firebase_core/firebase_core.dart' as fb;
 import 'package:flutter/material.dart';
+
+import 'app_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

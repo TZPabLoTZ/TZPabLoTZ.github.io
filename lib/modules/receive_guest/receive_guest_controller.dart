@@ -30,13 +30,41 @@ class ReceiveGuestController extends GetxController {
   Evento? evento;
   Convidado? convidado;
   bool isLoading = false;
+  bool isLoadingScreen = true;
 
   @override
   void onInit() {
     super.onInit();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      getUserId();
+      loadData();
     });
+  }
+
+  Future<void> loadData() async {
+    isLoadingScreen = true;
+    update();
+
+    await getUserId();
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    isLoadingScreen = false;
+    update();
+  }
+
+  Future<void> getUserId() async {
+    userId = window.location.href.split('/').last;
+
+    if (userId != null) {
+      debugPrint(window.location.href.split('/').last);
+      await getEvento(userId!);
+      await getConvidado(userId!);
+      final receiveGuestController = Get.find<ReceiveGuestController>();
+      receiveGuestController.setUserId(userId!);
+    } else {
+      isLoading = false;
+      update();
+    }
   }
 
   String? idLink;
@@ -44,22 +72,6 @@ class ReceiveGuestController extends GetxController {
   void setUserId(String id) {
     idLink = id;
     update();
-  }
-
-  void getUserId() {
-    window.location.href;
-    debugPrint(window.location.href.split('/').last);
-    userId = window.location.href.split('/').last;
-
-    if (userId != null) {
-      getEvento(userId!);
-      getConvidado(userId!);
-      final receiveGuestController = Get.find<ReceiveGuestController>();
-      receiveGuestController.setUserId(userId!);
-    } else {
-      isLoading = false;
-      update();
-    }
   }
 
   Future<void> getEvento(String userId) async {
@@ -126,7 +138,7 @@ class ReceiveGuestController extends GetxController {
   void updateSuggestions(String query) {
     updateUsedNames();
 
-    if (query.length >= 2) {
+    if (query.isNotEmpty) {
       filteredSuggestions
         ..clear()
         ..addAll(
@@ -195,12 +207,26 @@ class ReceiveGuestController extends GetxController {
         convidado = Convidado(
           id: null,
           nome: nome,
-          grupo: 'Sem grupo, Adicionado via convite',
+          grupo: 'Novos convidados',
           status: status,
           acompanhante: null,
         );
 
         await repository.addGuest(userId, convidado);
+
+        if (acompanhantesNomes != null && acompanhantesNomes.isNotEmpty) {
+          for (var acompanhanteNome in acompanhantesNomes) {
+            final acompanhante = Convidado(
+              id: null,
+              nome: acompanhanteNome,
+              grupo: 'Novos convidados',
+              status: 'Confirmado',
+              acompanhante: nome,
+            );
+
+            await repository.addGuest(userId, acompanhante);
+          }
+        }
 
         return true;
       }
@@ -219,15 +245,23 @@ class ReceiveGuestController extends GetxController {
 
       if (acompanhantesNomes != null && acompanhantesNomes.isNotEmpty) {
         for (var acompanhanteNome in acompanhantesNomes) {
-          final acompanhante = Convidado(
-            id: null,
-            nome: acompanhanteNome,
-            grupo: convidado.grupo,
-            status: 'Confirmado',
-            acompanhante: nome,
+          bool acompanhanteExiste = guestNames.any(
+            (g) =>
+                g.nome.trim().toLowerCase() ==
+                acompanhanteNome.trim().toLowerCase(),
           );
 
-          await repository.addGuest(userId, acompanhante);
+          if (!acompanhanteExiste) {
+            final acompanhante = Convidado(
+              id: null,
+              nome: acompanhanteNome,
+              grupo: convidado.grupo,
+              status: 'Confirmado',
+              acompanhante: nome,
+            );
+
+            await repository.addGuest(userId, acompanhante);
+          }
         }
       }
 

@@ -1,8 +1,8 @@
 import 'dart:js' as js;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:festit_invited/infra/models/convidado.dart';
 
+import '../models/convidado.dart';
 import '../models/evento.dart';
 
 class EventoRepository {
